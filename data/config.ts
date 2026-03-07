@@ -114,8 +114,8 @@ export const salonConfig = {
     description:
       "Lazer epilasyon, saç kaynak ve profesyonel kuaför hizmetlerinde güven veren teknik, güçlü görünüm ve rafine dokunuş.",
     image: {
-      src: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1800&q=80",
-      alt: "Lüks bir güzellik salonunda profesyonel saç şekillendirme ve bakım uygulaması",
+      src: "/hero-bg.jpg",
+      alt: "Popüler Güzellik Salonu İç Mekan Görünümü",
     },
     primaryCta: {
       label: "Randevu Al",
