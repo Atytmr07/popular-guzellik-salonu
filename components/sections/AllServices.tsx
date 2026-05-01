@@ -145,25 +145,28 @@ function buildMediaItems(title: string, photoCount: number, videoCount: number):
 
 function PhotoCard({ label }: { label: string }) {
   return (
-    <div className="snap-start flex-shrink-0 w-72 aspect-[4/3] glass-panel relative overflow-hidden group hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-primary/5 pointer-events-none" />
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-primary/20 to-transparent" />
-      {/* Image placeholder */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-14 h-14 text-primary/20 group-hover:text-primary/35 transition-colors duration-300">
+    <div className="snap-start flex-shrink-0 w-52 aspect-[9/16] relative bg-surface overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform duration-500">
+      {/* Placeholder image area */}
+      <div className="absolute inset-0 flex items-center justify-center bg-surface">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.75" className="w-16 h-16 text-primary/15 group-hover:text-primary/25 transition-colors duration-500">
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <circle cx="8.5" cy="8.5" r="1.5" />
           <polyline points="21 15 16 10 5 21" />
         </svg>
       </div>
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-black/10 opacity-80 group-hover:opacity-95 transition-opacity duration-700 z-10" />
+      {/* Inner accent border */}
+      <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 z-20 m-3" />
       {/* Top badge */}
-      <div className="absolute top-3 left-3">
-        <span className="text-[8px] uppercase tracking-[0.25em] text-text-faint/60 bg-black/40 px-2 py-1 backdrop-blur-sm">
+      <div className="absolute top-4 left-4 z-30">
+        <span className="glass-panel px-3 py-1.5 text-[8px] uppercase tracking-[0.3em] text-white/80">
           Foto
         </span>
       </div>
       {/* Bottom label */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+      <div className="absolute bottom-5 left-4 right-4 z-30 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+        <div className="w-6 h-px bg-primary mb-2 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-100" />
         <p className="text-[9px] uppercase tracking-[0.2em] text-white/70 leading-snug">
           {label}
         </p>
@@ -177,22 +180,21 @@ function VideoCard({ label }: { label: string }) {
 
   if (playing) {
     return (
-      <div className="snap-start flex-shrink-0 w-72 aspect-video glass-panel relative overflow-hidden bg-black">
-        {/* Real video element goes here when src is available */}
+      <div className="snap-start flex-shrink-0 w-52 aspect-[9/16] relative bg-black overflow-hidden">
         <video
           autoPlay
           controls
           className="absolute inset-0 w-full h-full object-contain"
         />
-        {/* Fallback overlay if no src yet */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/80 pointer-events-none">
-          <div className="w-10 h-10 rounded-full border border-primary/60 flex items-center justify-center">
+        {/* Shown until a real src is wired up */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/85 pointer-events-none z-10">
+          <div className="w-12 h-12 rounded-full border border-primary/50 flex items-center justify-center">
             <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-primary ml-0.5">
               <path d="M8 5v14l11-7z" />
             </svg>
           </div>
-          <p className="text-[9px] uppercase tracking-[0.25em] text-text-faint text-center px-4">
-            İçerik Yakında
+          <p className="text-[9px] uppercase tracking-[0.25em] text-text-faint text-center px-6 leading-relaxed">
+            İçerik<br />Yakında
           </p>
         </div>
       </div>
@@ -201,28 +203,33 @@ function VideoCard({ label }: { label: string }) {
 
   return (
     <div
-      className="snap-start flex-shrink-0 w-72 aspect-video glass-panel relative flex flex-col items-center justify-center gap-4 overflow-hidden group hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+      className="snap-start flex-shrink-0 w-52 aspect-[9/16] relative bg-surface overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform duration-500"
       onClick={() => setPlaying(true)}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/8 to-primary/3 pointer-events-none" />
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-primary/40 to-transparent" />
-      {/* Play button */}
-      <div className="w-16 h-16 rounded-full border border-primary/40 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/15 transition-all duration-500 z-10 group-hover:scale-110">
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-primary ml-1">
-          <path d="M8 5v14l11-7z" />
-        </svg>
+      {/* Background tint */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-primary/5 to-black/20 z-10" />
+      {/* Inner accent border */}
+      <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 z-20 m-3" />
+      {/* Top badge */}
+      <div className="absolute top-4 left-4 z-30">
+        <span className="glass-panel px-3 py-1.5 text-[8px] uppercase tracking-[0.3em] text-primary">
+          Video
+        </span>
       </div>
-      {/* Label */}
-      <p className="text-[9px] uppercase tracking-[0.2em] text-text-muted text-center px-6 leading-snug z-10">
-        {label}
-      </p>
-      {/* Video badge */}
-      <div className="absolute top-3 left-3 text-[8px] uppercase tracking-[0.2em] text-primary bg-primary/10 px-2 py-1 z-10 backdrop-blur-sm">
-        Video
+      {/* Centered play button */}
+      <div className="absolute inset-0 flex items-center justify-center z-30">
+        <div className="w-16 h-16 rounded-full border border-primary/50 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-primary ml-1">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
       </div>
-      {/* Click hint */}
-      <div className="absolute bottom-3 right-3 text-[7px] uppercase tracking-[0.2em] text-text-faint/40 z-10">
-        Oynat
+      {/* Bottom label */}
+      <div className="absolute bottom-5 left-4 right-4 z-30 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+        <div className="w-6 h-px bg-primary mb-2 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-100" />
+        <p className="text-[9px] uppercase tracking-[0.2em] text-white/70 leading-snug">
+          {label}
+        </p>
       </div>
     </div>
   );
@@ -252,11 +259,11 @@ function MediaGallery({ title, photoCount, videoCount }: { title: string; photoC
           )
         )}
         {/* Add more card */}
-        <div className="snap-start flex-shrink-0 w-36 aspect-[4/3] border border-dashed border-surface-border flex flex-col items-center justify-center gap-3 hover:border-primary/30 transition-colors duration-300 cursor-pointer group">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7 text-text-faint/30 group-hover:text-primary/40 transition-colors">
+        <div className="snap-start flex-shrink-0 w-52 aspect-[9/16] border border-dashed border-surface-border flex flex-col items-center justify-center gap-4 hover:border-primary/30 transition-colors duration-300 cursor-pointer group">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-8 h-8 text-text-faint/30 group-hover:text-primary/40 transition-colors">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
-          <p className="text-[7px] uppercase tracking-[0.2em] text-text-faint/40 group-hover:text-primary/50 transition-colors text-center leading-snug">
+          <p className="text-[8px] uppercase tracking-[0.2em] text-text-faint/40 group-hover:text-primary/50 transition-colors text-center leading-relaxed">
             İçerik<br />Yakında
           </p>
         </div>
