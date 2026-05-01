@@ -3,6 +3,8 @@ import { Footer } from "../components/layout/Footer";
 import { Hero } from "../components/sections/Hero";
 import { Motto } from "../components/sections/Motto";
 import { Services } from "../components/sections/Services";
+import { AllServices } from "../components/sections/AllServices";
+import { Staff } from "../components/sections/Staff";
 import { Gallery } from "../components/sections/Gallery";
 import { VideoHighlight } from "../components/sections/VideoHighlight";
 import { Reviews } from "../components/sections/Reviews";
@@ -16,6 +18,8 @@ export default function Page() {
         <Hero />
         <Motto />
         <Services />
+        <AllServices />
+        <Staff />
         <Gallery />
         <VideoHighlight />
         <Reviews />

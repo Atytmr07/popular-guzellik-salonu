@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#0A0A0A] px-6 text-gray-200">
       <div className="w-full max-w-2xl rounded-[32px] border border-white/10 bg-white/5 p-10 text-center shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-        <p className="text-xs uppercase tracking-[0.34em] text-[#D4AF37]">
+        <p className="text-xs uppercase tracking-[0.34em] text-[#C41E3A]">
           404
         </p>
         <h1 className="mt-4 text-5xl leading-none text-white [font-family:var(--font-display)] sm:text-6xl">
@@ -16,7 +16,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="luxury-button mt-10 inline-flex min-h-12 items-center rounded-full bg-[#D4AF37] px-7 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-black shadow-[0_12px_30px_rgba(212,175,55,0.18)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(212,175,55,0.4)]"
+          className="luxury-button mt-10 inline-flex min-h-12 items-center rounded-full bg-[#C41E3A] px-7 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-white shadow-[0_12px_30px_rgba(196,30,58,0.18)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_0_15px_rgba(196,30,58,0.4)]"
         >
           Ana Sayfaya Dön
         </Link>

@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Popüler Kuaför & Güzellik Salonu",
     short_name: "Popüler",
     description:
-      "Antalya Kepez'de 23 yıllık uzmanlıkla lazer epilasyon, mikro saç kaynak ve kuaför hizmetleri.",
+      "Antalya Kepez'de 35 yıllık uzmanlıkla lazer epilasyon, mikro saç kaynak ve kuaför hizmetleri.",
     start_url: "/",
     display: "standalone",
     background_color: "#111111",
