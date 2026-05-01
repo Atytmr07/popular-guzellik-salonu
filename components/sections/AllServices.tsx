@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 const services = [
   {
     id: "kas-dizayn",
@@ -127,7 +131,6 @@ function buildMediaItems(title: string, photoCount: number, videoCount: number):
   const items: MediaItem[] = [];
   let p = 1, v = 1;
   const total = photoCount + videoCount;
-  // Interleave: roughly one video every N photos
   const step = photoCount > 0 && videoCount > 0 ? Math.floor(photoCount / videoCount) : 999;
   for (let i = 0; i < total; i++) {
     const dueVideo = v <= videoCount && (p - 1) % (step + 1) === step;
@@ -142,51 +145,84 @@ function buildMediaItems(title: string, photoCount: number, videoCount: number):
 
 function PhotoCard({ label }: { label: string }) {
   return (
-    <div className="snap-start flex-shrink-0 w-32 aspect-[3/4] glass-panel relative flex flex-col items-end justify-between p-2 overflow-hidden group hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+    <div className="snap-start flex-shrink-0 w-72 aspect-[4/3] glass-panel relative overflow-hidden group hover:-translate-y-1 transition-all duration-300 cursor-pointer">
       <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-primary/5 pointer-events-none" />
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-primary/20 to-transparent" />
-      {/* Image icon center */}
+      {/* Image placeholder */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-10 h-10 text-primary/20 group-hover:text-primary/35 transition-colors duration-300">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-14 h-14 text-primary/20 group-hover:text-primary/35 transition-colors duration-300">
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <circle cx="8.5" cy="8.5" r="1.5" />
           <polyline points="21 15 16 10 5 21" />
         </svg>
       </div>
       {/* Top badge */}
-      <span className="relative z-10 text-[7px] uppercase tracking-[0.25em] text-text-faint/50 bg-white/5 px-1.5 py-0.5">
-        Foto
-      </span>
+      <div className="absolute top-3 left-3">
+        <span className="text-[8px] uppercase tracking-[0.25em] text-text-faint/60 bg-black/40 px-2 py-1 backdrop-blur-sm">
+          Foto
+        </span>
+      </div>
       {/* Bottom label */}
-      <p className="relative z-10 text-[8px] uppercase tracking-[0.15em] text-text-faint/60 leading-snug line-clamp-2">
-        {label}
-      </p>
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+        <p className="text-[9px] uppercase tracking-[0.2em] text-white/70 leading-snug">
+          {label}
+        </p>
+      </div>
     </div>
   );
 }
 
 function VideoCard({ label }: { label: string }) {
+  const [playing, setPlaying] = useState(false);
+
+  if (playing) {
+    return (
+      <div className="snap-start flex-shrink-0 w-72 aspect-video glass-panel relative overflow-hidden bg-black">
+        {/* Real video element goes here when src is available */}
+        <video
+          autoPlay
+          controls
+          className="absolute inset-0 w-full h-full object-contain"
+        />
+        {/* Fallback overlay if no src yet */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/80 pointer-events-none">
+          <div className="w-10 h-10 rounded-full border border-primary/60 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-primary ml-0.5">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+          <p className="text-[9px] uppercase tracking-[0.25em] text-text-faint text-center px-4">
+            İçerik Yakında
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="snap-start flex-shrink-0 w-28 aspect-[9/16] glass-panel relative flex flex-col items-center justify-center gap-3 overflow-hidden group hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+    <div
+      className="snap-start flex-shrink-0 w-72 aspect-video glass-panel relative flex flex-col items-center justify-center gap-4 overflow-hidden group hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+      onClick={() => setPlaying(true)}
+    >
       <div className="absolute inset-0 bg-gradient-to-b from-primary/8 to-primary/3 pointer-events-none" />
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-primary/40 to-transparent" />
       {/* Play button */}
-      <div className="w-11 h-11 rounded-full border border-primary/40 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/15 transition-all duration-300 z-10">
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-primary ml-0.5">
+      <div className="w-16 h-16 rounded-full border border-primary/40 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/15 transition-all duration-500 z-10 group-hover:scale-110">
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-primary ml-1">
           <path d="M8 5v14l11-7z" />
         </svg>
       </div>
       {/* Label */}
-      <p className="text-[8px] uppercase tracking-[0.15em] text-text-muted text-center px-3 leading-snug z-10 line-clamp-3">
+      <p className="text-[9px] uppercase tracking-[0.2em] text-text-muted text-center px-6 leading-snug z-10">
         {label}
       </p>
       {/* Video badge */}
-      <div className="absolute top-2 right-2 text-[7px] uppercase tracking-[0.2em] text-primary bg-primary/10 px-1.5 py-0.5 z-10">
+      <div className="absolute top-3 left-3 text-[8px] uppercase tracking-[0.2em] text-primary bg-primary/10 px-2 py-1 z-10 backdrop-blur-sm">
         Video
       </div>
-      {/* Yakında overlay */}
-      <div className="absolute bottom-2 left-0 right-0 text-center text-[7px] uppercase tracking-[0.2em] text-text-faint/40 z-10">
-        Yakında
+      {/* Click hint */}
+      <div className="absolute bottom-3 right-3 text-[7px] uppercase tracking-[0.2em] text-text-faint/40 z-10">
+        Oynat
       </div>
     </div>
   );
@@ -195,18 +231,19 @@ function VideoCard({ label }: { label: string }) {
 function MediaGallery({ title, photoCount, videoCount }: { title: string; photoCount: number; videoCount: number }) {
   const items = buildMediaItems(title, photoCount, videoCount);
   return (
-    <div className="w-full">
-      <div className="flex items-center gap-4 mb-4">
+    <div className="w-full flex flex-col justify-center">
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-5">
         <p className="text-[9px] uppercase tracking-[0.4em] text-primary">Fotoğraf & Video</p>
         <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.2em] text-text-faint/50">
-          <span>{photoCount} foto</span>
+          <span>{photoCount} Foto</span>
           <span className="w-px h-3 bg-surface-border" />
-          <span>{videoCount} video</span>
+          <span>{videoCount} Video</span>
         </div>
       </div>
 
       {/* Scrollable gallery */}
-      <div className="flex gap-3 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-3">
+      <div className="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4">
         {items.map((item, i) =>
           item.type === "video" ? (
             <VideoCard key={i} label={item.label} />
@@ -214,19 +251,19 @@ function MediaGallery({ title, photoCount, videoCount }: { title: string; photoC
             <PhotoCard key={i} label={item.label} />
           )
         )}
-        {/* Add more CTA card */}
-        <div className="snap-start flex-shrink-0 w-24 aspect-[3/4] border border-dashed border-surface-border flex flex-col items-center justify-center gap-2 text-center p-3 hover:border-primary/30 transition-colors duration-300 cursor-pointer group">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6 text-text-faint/30 group-hover:text-primary/40 transition-colors">
+        {/* Add more card */}
+        <div className="snap-start flex-shrink-0 w-36 aspect-[4/3] border border-dashed border-surface-border flex flex-col items-center justify-center gap-3 hover:border-primary/30 transition-colors duration-300 cursor-pointer group">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7 text-text-faint/30 group-hover:text-primary/40 transition-colors">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
-          <p className="text-[7px] uppercase tracking-[0.2em] text-text-faint/40 group-hover:text-primary/50 transition-colors leading-snug">
+          <p className="text-[7px] uppercase tracking-[0.2em] text-text-faint/40 group-hover:text-primary/50 transition-colors text-center leading-snug">
             İçerik<br />Yakında
           </p>
         </div>
       </div>
 
       {/* Scroll hint */}
-      <div className="flex items-center gap-2 mt-1">
+      <div className="flex items-center gap-2 mt-2">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3 h-3 text-text-faint/30">
           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
@@ -266,9 +303,9 @@ export function AllServices() {
             className={`relative px-6 lg:px-12 py-20 lg:py-28 border-b border-surface-border reveal-on-scroll ${isEven ? "bg-background" : "bg-surface"}`}
           >
             <div className="mx-auto max-w-[1600px]">
-              <div className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-start`}>
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-                {/* Left/Right: Service info */}
+                {/* Service info */}
                 <div className={`flex flex-col gap-6 ${!isEven ? "lg:order-2" : ""}`}>
                   <div className="flex items-center gap-6">
                     <span className="text-6xl lg:text-8xl font-display text-primary/15 leading-none select-none">{service.number}</span>
@@ -282,7 +319,6 @@ export function AllServices() {
                     {service.description}
                   </p>
 
-                  {/* Highlights */}
                   <ul className="flex flex-col gap-3">
                     {service.highlights.map((h) => (
                       <li key={h} className="flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] text-text-faint">
@@ -292,7 +328,6 @@ export function AllServices() {
                     ))}
                   </ul>
 
-                  {/* CTA */}
                   <a
                     href="tel:+902422371015"
                     className="mt-2 inline-flex items-center gap-3 self-start px-8 py-4 border border-primary/30 bg-primary/5 text-[10px] uppercase tracking-[0.35em] text-primary hover:bg-primary/15 hover:border-primary/60 transition-all duration-300 group"
@@ -304,8 +339,8 @@ export function AllServices() {
                   </a>
                 </div>
 
-                {/* Right/Left: Scrollable media gallery */}
-                <div className={`${!isEven ? "lg:order-1" : ""}`}>
+                {/* Scrollable media gallery */}
+                <div className={`flex items-center ${!isEven ? "lg:order-1" : ""}`}>
                   <MediaGallery
                     title={service.title}
                     photoCount={service.mediaCount.photo}
