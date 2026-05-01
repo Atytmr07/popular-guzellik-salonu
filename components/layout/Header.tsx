@@ -33,14 +33,6 @@ export function Header() {
         {/* CTA */}
         <div className="flex items-center gap-8">
           <a
-            href={salonConfig.contact.instagramHref}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden md:block text-[9px] uppercase tracking-[0.4em] text-text-muted transition-colors hover:text-white"
-          >
-            Instagram
-          </a>
-          <a
             href={salonConfig.contact.phoneHref}
             className="relative overflow-hidden group px-6 py-2.5 border border-primary/30 bg-primary/5 transition-all duration-500 hover:bg-primary/20 hover:border-primary/80 outline-none"
           >
