@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #D4AF37;
-  /* Gold */
-  --color-primary-light: #F7E7AC;
-  /* Light Gold */
-  --color-primary-dark: #8F6B17;
-  /* Dark Gold */
+  --color-primary: #C41E3A;
+  /* Crimson Red */
+  --color-primary-light: #FF8FA3;
+  /* Rose Pink */
+  --color-primary-dark: #8B0000;
+  /* Dark Crimson */
 
   --color-background: #111111;
   /* Lighter Dark Base */
@@ -48,8 +48,8 @@ body {
 }
 
 ::selection {
-  background: rgba(212, 175, 55, 0.3);
-  /* Gold with opacity */
+  background: rgba(196, 30, 58, 0.3);
+  /* Crimson with opacity */
   color: #fff;
 }
 
@@ -166,7 +166,7 @@ body {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(180deg, rgba(212, 175, 55, 0.4) 0%, rgba(212, 175, 55, 0) 100%);
+  background: linear-gradient(180deg, rgba(196, 30, 58, 0.4) 0%, rgba(196, 30, 58, 0) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;

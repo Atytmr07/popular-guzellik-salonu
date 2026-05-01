@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | Popüler Kuaför & Güzellik Salonu",
   },
   description:
-    "Antalya Kepez'de 23 yıllık uzmanlıkla lazer epilasyon, mikro saç kaynak, kaş tasarımı ve profesyonel kuaför hizmetleri. Popüler Güzellik Salonu ile tanışın.",
+    "Antalya Kepez'de 35 yıllık uzmanlıkla lazer epilasyon, mikro saç kaynak, kaş tasarımı ve profesyonel kuaför hizmetleri. Popüler Güzellik Salonu ile tanışın.",
   applicationName: "Popüler Kuaför & Güzellik Salonu",
   keywords: [
     "Antalya kuaför",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     url: "/",
     siteName: salonConfig.brand.name,
     title: "Antalya Güzellik Salonu & Kuaför - Popüler VIP",
-    description: "23 yıllık uzmanlıkla Antalya Kepez'de lazer epilasyon, saç kaynak ve profesyonel kuaför hizmetleri.",
+    description: "35 yıllık uzmanlıkla Antalya Kepez'de lazer epilasyon, saç kaynak ve profesyonel kuaför hizmetleri.",
     images: [
       {
         url: salonConfig.hero.image.src,
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Antalya Güzellik Salonu & Kuaför - Popüler VIP",
-    description: "23 yıllık uzmanlıkla Antalya Kepez'de lazer epilasyon, saç kaynak ve profesyonel kuaför hizmetleri.",
+    description: "35 yıllık uzmanlıkla Antalya Kepez'de lazer epilasyon, saç kaynak ve profesyonel kuaför hizmetleri.",
     images: [salonConfig.hero.image.src],
   },
   icons: {

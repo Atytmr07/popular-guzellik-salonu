@@ -99,18 +99,19 @@ export const salonConfig = {
   brand: {
     name: "Popüler Kuaför & Güzellik Salonu",
     shortName: "Popüler Kuaför & Güzellik Salonu",
-    tagline: "23 Yıllık Uzmanlık",
+    tagline: "35 Yıllık Uzmanlık",
     instagramHandle: "@populer_antalya_guzellik",
   },
   nav: [
-    { label: "Hizmetler", href: "#services" },
+    { label: "Hizmetler", href: "#all-services" },
+    { label: "Ekibimiz", href: "#ekibimiz" },
     { label: "Galeri", href: "#gallery" },
     { label: "Yorumlar", href: "#reviews" },
     { label: "İletişim", href: "#contact" },
   ],
   hero: {
     eyebrow: "Kuaför, Saç Kaynak ve Güzellik Salonu",
-    title: "23 Yıllık Tecrübeyle, Güzelliğinizin Yeni Zirvesi.",
+    title: "35 Yıllık Tecrübeyle, Güzelliğinizin Yeni Zirvesi.",
     description:
       "Lazer epilasyon, saç kaynak ve profesyonel kuaför hizmetlerinde güven veren teknik, güçlü görünüm ve rafine dokunuş.",
     image: {
@@ -131,7 +132,7 @@ export const salonConfig = {
       "Kaş Tasarımında İddialı Dokunuş",
     ],
     stats: [
-      { value: "23+", label: "Yıllık Tecrübe" },
+      { value: "35+", label: "Yıllık Tecrübe" },
       { value: "430+", label: "Kadının Tercihi" },
       { value: "4.9/5", label: "Google Değerlendirmesi" },
     ],
