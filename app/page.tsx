@@ -1,7 +1,6 @@
 import { Header } from "../components/layout/Header";
 import { Footer } from "../components/layout/Footer";
 import { Hero } from "../components/sections/Hero";
-import { Motto } from "../components/sections/Motto";
 import { Services } from "../components/sections/Services";
 import { AllServices } from "../components/sections/AllServices";
 import { Staff } from "../components/sections/Staff";
@@ -16,7 +15,6 @@ export default function Page() {
       <Header />
       <main>
         <Hero />
-        <Motto />
         <Services />
         <AllServices />
         <Staff />
