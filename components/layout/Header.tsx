@@ -84,7 +84,7 @@ export function Header() {
 
       {/* ── Mobile Dropdown Menu ── */}
       <div
-        className={`lg:hidden glass-panel border-b border-surface-border/50 overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`lg:hidden border-b border-surface-border/50 overflow-hidden transition-all duration-300 ease-in-out bg-[#111111]/95 backdrop-blur-xl ${
           menuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
