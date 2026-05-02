@@ -1,7 +1,36 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
+// ─── Media types ────────────────────────────────────────────────────────────
+type PhotoFile = {
+  type: "photo";
+  src: string;   // e.g. "/media/kas-dizayn/sonuc-1.jpg"
+  alt: string;
+};
+
+type VideoFile = {
+  type: "video";
+  src: string;   // e.g. "/media/perma-sac/video-1.mp4"
+  poster?: string;
+  label: string;
+};
+
+// Instagram Reel — sadece reel ID'si yeterli
+// Örnek: permalink "https://www.instagram.com/reel/DW4Ara1jQmX/" → id: "DW4Ara1jQmX"
+type InstagramFile = {
+  type: "instagram";
+  id: string;
+  label: string;
+};
+
+type MediaFile = PhotoFile | VideoFile | InstagramFile;
+
+// ─── Service data ────────────────────────────────────────────────────────────
+// When you receive media files for a service, add them to the `media` array.
+// Leave the array empty ([]) until files are provided — the UI will show a
+// "İçerik Yakında" placeholder automatically.
 const services = [
   {
     id: "kas-dizayn",
@@ -11,7 +40,7 @@ const services = [
     description:
       "Yüz oranlarınıza ve kemik yapınıza göre kişiye özel kaş formu tasarlanır. Doğal kaş hatlarınız korunarak bakışlarınıza derinlik ve güç katılır. Her kaş seansı; ölçüm, form onayı ve hassas uygulama adımlarından oluşur.",
     highlights: ["Kişiye özel form analizi", "Mikroblading & ipek kaş", "Kaş lifting & laminasyon"],
-    mediaCount: { photo: 4, video: 2 },
+    media: [] as MediaFile[],
   },
   {
     id: "manikur",
@@ -21,7 +50,7 @@ const services = [
     description:
       "Eller güzelliğin sessiz taçlarıdır. Profesyonel manikür seanslarımızda tırnak şekillendirme, kütikül bakımı ve kalıcı oje uygulaması bir arada sunulur. Haftalarca süren pürüzsüz, canlı ve bakımlı eller için.",
     highlights: ["Klasik & kalıcı manikür", "Fransız manikür", "Protez tırnak"],
-    mediaCount: { photo: 5, video: 1 },
+    media: [] as MediaFile[],
   },
   {
     id: "pedikur",
@@ -31,7 +60,7 @@ const services = [
     description:
       "Ayak sağlığı ve estetiğini bir arada sunan profesyonel pedikür hizmetimizle ayak tabanı bakımı, tırnak şekillendirmesi ve kalıcı oje uygulaması eksiksiz yapılır. Sezon fark etmeksizin bakımlı ve sağlıklı ayaklar için.",
     highlights: ["Tıbbi pedikür", "Kalıcı oje & süsleme", "Ayak peeling bakımı"],
-    mediaCount: { photo: 4, video: 1 },
+    media: [] as MediaFile[],
   },
   {
     id: "makyaj",
@@ -41,7 +70,7 @@ const services = [
     description:
       "Günlük makyajdan nişan ve düğün gibi özel gün hazırlıklarına kadar her anınız için profesyonel makyaj hizmetimiz sunulmaktadır. Ten tonunuza, yüz şeklinize ve etkinliğin ruhuna uygun, uzun süre kalıcı sonuçlar elde edilir.",
     highlights: ["Nişan & gelin makyajı", "Smoky & editorial look", "Airbrush makyaj"],
-    mediaCount: { photo: 5, video: 3 },
+    media: [] as MediaFile[],
   },
   {
     id: "lazer-epilasyon",
@@ -51,7 +80,7 @@ const services = [
     description:
       "Ten tonuna ve kıl yapısına özel ayarlanan lazer parametreleriyle düzenli seans takibi yapılır. Konfor odaklı protokolümüzle istenmeyen tüylerden kalıcı olarak kurtulun. Her seans öncesi cilt analizi, uygulama sonrası bakım önerileri sunulur.",
     highlights: ["Tüm bölge uygulaması", "Seans takip planı", "Konfor odaklı protokol"],
-    mediaCount: { photo: 3, video: 2 },
+    media: [] as MediaFile[],
   },
   {
     id: "igneli-epilasyon",
@@ -61,7 +90,7 @@ const services = [
     description:
       "Lazer epilasyona yanıt vermeyen açık renkli veya ince tüyler için en etkili yöntem olan iğneli epilasyon, her kıl folükülünü tek tek hedef alarak kalıcı sonuç sunar. Hassas bölgeler için özellikle tercih edilen güvenilir bir yöntemdir.",
     highlights: ["Açık tüylerde kalıcı sonuç", "Folükül bazlı uygulama", "Kaş & yüz bölgesi uzmanı"],
-    mediaCount: { photo: 3, video: 1 },
+    media: [] as MediaFile[],
   },
   {
     id: "kalici-makyaj",
@@ -71,7 +100,7 @@ const services = [
     description:
       "Uyandığınız andan itibaren makyajlı görünmek artık mümkün. Dudak, kaş ve eyeliner bölgelerinde uygulanan kalıcı makyaj pigmentasyonu doğal ve şık bir görünüm sağlar. Uzun ömürlü, su geçirmez ve kişiye özel ton uyumu.",
     highlights: ["Kalıcı kaş & eyeliner", "Dudak pigmentasyonu", "Doğal ton uyumu"],
-    mediaCount: { photo: 4, video: 2 },
+    media: [] as MediaFile[],
   },
   {
     id: "cilt-bakimi",
@@ -81,7 +110,7 @@ const services = [
     description:
       "Cilt tipiniz analiz edilerek ihtiyacınıza özel protokol oluşturulur. Derinlemesine temizleme, nemlendirme, antiaging ve leke bakımı seçenekleriyle cildiniz her seferinde yenilenir. Profesyonel ürünler ve uzman ellerle parlak, sağlıklı cilt.",
     highlights: ["Cilt analizi & protokol", "Antiaging & leke bakımı", "Derin temizleme seansı"],
-    mediaCount: { photo: 4, video: 1 },
+    media: [] as MediaFile[],
   },
   {
     id: "sac-renklendirme",
@@ -91,7 +120,7 @@ const services = [
     description:
       "Tek ton renklendirmeden balyaj, ombre ve röfleye kadar geniş bir renk yelpazesi sunulmaktadır. Ten tonunuza ve saç yapınıza göre en uygun renk paleti uzman kuaförlerimiz tarafından tasarlanır. Profesyonel ürünlerle canlı ve kalıcı sonuçlar.",
     highlights: ["Balyaj & ombre", "Tek ton & röfle", "Ten tonuna özel renk danışmanlığı"],
-    mediaCount: { photo: 5, video: 2 },
+    media: [] as MediaFile[],
   },
   {
     id: "sac-kesim",
@@ -101,7 +130,7 @@ const services = [
     description:
       "Yüz şeklinize, yaşam stilinize ve saç yapınıza göre kişiye özel saç kesimi yapılır. Klasik kesimden editoryal stillere kadar geniş bir repertuarla her tercih karşılanır. Kesim sonrası fön ve şekillendirme dahildir.",
     highlights: ["Yüz şekline özel kesim", "Editoryal & trend stiller", "Fön & şekillendirme dahil"],
-    mediaCount: { photo: 5, video: 2 },
+    media: [] as MediaFile[],
   },
   {
     id: "perma-sac",
@@ -111,7 +140,9 @@ const services = [
     description:
       "Kalıcı dalga ve kıvırma uygulamalarında saçın dokusunu koruyarak uzun süre dayanıklı kıvrımlar elde edilir. İnce, düz ve hacim kazanmak isteyen saçlar için ideal seçenek. Saç tipine özel perma protokolü ile sağlıklı ve canlı sonuçlar.",
     highlights: ["Kalıcı dalga & kıvırma", "Hacim kazandırıcı perma", "Saç tipine özel protokol"],
-    mediaCount: { photo: 4, video: 6 },
+    media: [
+      { type: "instagram", id: "DW4Ara1jQmX", label: "Perma Saç — Reel" },
+    ] as MediaFile[],
   },
   {
     id: "sac-kaynak",
@@ -121,170 +152,216 @@ const services = [
     description:
       "Uzunluk, yoğunluk ve dolgunluk isteyen kadınlar için premium saç kaynak uygulamaları yapılmaktadır. Mikro kaynak, bant kaynak ve füzyon yöntemleriyle doğal geçiş sağlanır. Kaynak bakımı ve yenileme seans planı dahildir.",
     highlights: ["Mikro & bant kaynak", "Füzyon uygulaması", "Kaynak bakım & yenileme"],
-    mediaCount: { photo: 5, video: 3 },
+    media: [] as MediaFile[],
   },
 ];
 
-type MediaItem = { type: "photo" | "video"; label: string; index: number };
-
-function buildMediaItems(title: string, photoCount: number, videoCount: number): MediaItem[] {
-  const items: MediaItem[] = [];
-  let p = 1, v = 1;
-  const total = photoCount + videoCount;
-  const step = photoCount > 0 && videoCount > 0 ? Math.floor(photoCount / videoCount) : 999;
-  for (let i = 0; i < total; i++) {
-    const dueVideo = v <= videoCount && (p - 1) % (step + 1) === step;
-    if (dueVideo || p > photoCount) {
-      items.push({ type: "video", label: `${title} — Video ${v}`, index: v++ });
-    } else {
-      items.push({ type: "photo", label: `${title} — Sonuç ${p}`, index: p++ });
-    }
-  }
-  return items;
+// ─── Grid column helper ───────────────────────────────────────────────────────
+// Returns Tailwind grid-cols classes based on item count for a balanced layout.
+function gridColsClass(count: number): string {
+  if (count === 1) return "grid-cols-1";
+  if (count === 2) return "grid-cols-2";
+  if (count === 3) return "grid-cols-2 sm:grid-cols-3";
+  if (count === 4) return "grid-cols-2";
+  if (count === 5) return "grid-cols-2 sm:grid-cols-3";
+  return "grid-cols-2 sm:grid-cols-3"; // 6+
 }
 
-function PhotoCard({ label }: { label: string }) {
+// ─── Photo card ───────────────────────────────────────────────────────────────
+function PhotoCard({ file }: { file: PhotoFile }) {
   return (
-    <div className="snap-start flex-shrink-0 w-52 aspect-[9/16] relative bg-surface overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform duration-500">
-      {/* Placeholder image area */}
-      <div className="absolute inset-0 flex items-center justify-center bg-surface">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.75" className="w-16 h-16 text-primary/15 group-hover:text-primary/25 transition-colors duration-500">
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <circle cx="8.5" cy="8.5" r="1.5" />
-          <polyline points="21 15 16 10 5 21" />
-        </svg>
-      </div>
+    <div className="relative aspect-[9/16] bg-surface overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform duration-500">
+      <Image
+        src={file.src}
+        alt={file.alt}
+        fill
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+        className="object-cover object-center transition-transform duration-[2s] group-hover:scale-105"
+      />
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-black/10 opacity-80 group-hover:opacity-95 transition-opacity duration-700 z-10" />
-      {/* Inner accent border */}
-      <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 z-20 m-3" />
-      {/* Top badge */}
-      <div className="absolute top-4 left-4 z-30">
-        <span className="glass-panel px-3 py-1.5 text-[8px] uppercase tracking-[0.3em] text-white/80">
-          Foto
-        </span>
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-700" />
+      {/* Inner accent border on hover */}
+      <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 m-2" />
+      {/* Badge */}
+      <div className="absolute top-2 left-2">
+        <span className="glass-panel px-2 py-1 text-[7px] uppercase tracking-[0.25em] text-white/70">Foto</span>
       </div>
-      {/* Bottom label */}
-      <div className="absolute bottom-5 left-4 right-4 z-30 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-        <div className="w-6 h-px bg-primary mb-2 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-100" />
-        <p className="text-[9px] uppercase tracking-[0.2em] text-white/70 leading-snug">
-          {label}
-        </p>
+      {/* Label reveal */}
+      <div className="absolute bottom-3 left-3 right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+        <div className="w-4 h-px bg-primary mb-1.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-75" />
+        <p className="text-[8px] uppercase tracking-[0.15em] text-white/70 leading-snug line-clamp-2">{file.alt}</p>
       </div>
     </div>
   );
 }
 
-function VideoCard({ label }: { label: string }) {
+// ─── Video card ───────────────────────────────────────────────────────────────
+function VideoCard({ file }: { file: VideoFile }) {
   const [playing, setPlaying] = useState(false);
-
-  if (playing) {
-    return (
-      <div className="snap-start flex-shrink-0 w-52 aspect-[9/16] relative bg-black overflow-hidden">
-        <video
-          autoPlay
-          controls
-          className="absolute inset-0 w-full h-full object-contain"
-        />
-        {/* Shown until a real src is wired up */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/85 pointer-events-none z-10">
-          <div className="w-12 h-12 rounded-full border border-primary/50 flex items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-primary ml-0.5">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-          <p className="text-[9px] uppercase tracking-[0.25em] text-text-faint text-center px-6 leading-relaxed">
-            İçerik<br />Yakında
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div
-      className="snap-start flex-shrink-0 w-52 aspect-[9/16] relative bg-surface overflow-hidden group cursor-pointer hover:-translate-y-2 transition-transform duration-500"
+      className="relative aspect-[9/16] bg-surface overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform duration-500"
       onClick={() => setPlaying(true)}
     >
-      {/* Background tint */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-primary/5 to-black/20 z-10" />
-      {/* Inner accent border */}
-      <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 z-20 m-3" />
-      {/* Top badge */}
-      <div className="absolute top-4 left-4 z-30">
-        <span className="glass-panel px-3 py-1.5 text-[8px] uppercase tracking-[0.3em] text-primary">
-          Video
-        </span>
-      </div>
-      {/* Centered play button */}
-      <div className="absolute inset-0 flex items-center justify-center z-30">
-        <div className="w-16 h-16 rounded-full border border-primary/50 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 text-primary ml-1">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </div>
-      </div>
-      {/* Bottom label */}
-      <div className="absolute bottom-5 left-4 right-4 z-30 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-        <div className="w-6 h-px bg-primary mb-2 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-100" />
-        <p className="text-[9px] uppercase tracking-[0.2em] text-white/70 leading-snug">
-          {label}
-        </p>
-      </div>
+      {/* Poster image or dark bg */}
+      {file.poster && !playing && (
+        <Image
+          src={file.poster}
+          alt={file.label}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+          className="object-cover object-center"
+        />
+      )}
+
+      {/* Video element — renders only after click */}
+      {playing && (
+        <video
+          src={file.src}
+          autoPlay
+          controls
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-20"
+        />
+      )}
+
+      {/* Overlay — hidden when playing */}
+      {!playing && (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-primary/5 to-black/20 z-10" />
+          <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 m-2 z-10" />
+          {/* Badge */}
+          <div className="absolute top-2 left-2 z-10">
+            <span className="glass-panel px-2 py-1 text-[7px] uppercase tracking-[0.25em] text-primary">Video</span>
+          </div>
+          {/* Play button */}
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <div className="w-12 h-12 rounded-full border border-primary/50 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-primary ml-1">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+          {/* Label */}
+          <div className="absolute bottom-3 left-3 right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-10">
+            <div className="w-4 h-px bg-primary mb-1.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-75" />
+            <p className="text-[8px] uppercase tracking-[0.15em] text-white/70 leading-snug line-clamp-2">{file.label}</p>
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
-function MediaGallery({ title, photoCount, videoCount }: { title: string; photoCount: number; videoCount: number }) {
-  const items = buildMediaItems(title, photoCount, videoCount);
+// ─── Instagram Reel card ──────────────────────────────────────────────────────
+function InstagramCard({ file }: { file: InstagramFile }) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="w-full flex flex-col justify-center">
+    <div className="relative aspect-[9/16] bg-surface overflow-hidden group">
+      {/* Collapsed: teaser overlay */}
+      {!open && (
+        <button
+          onClick={() => setOpen(true)}
+          className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-4 cursor-pointer z-10"
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-primary/5 to-black/20" />
+          <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 m-2" />
+          {/* Instagram icon */}
+          <div className="relative z-10 w-14 h-14 rounded-full border border-primary/50 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-primary">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+          </div>
+          {/* Labels */}
+          <div className="relative z-10 flex flex-col items-center gap-1">
+            <span className="text-[8px] uppercase tracking-[0.3em] text-primary">Reel</span>
+            <p className="text-[8px] uppercase tracking-[0.15em] text-white/60 text-center px-3 leading-snug line-clamp-2">
+              {file.label}
+            </p>
+          </div>
+          {/* Badge */}
+          <div className="absolute top-2 left-2">
+            <span className="glass-panel px-2 py-1 text-[7px] uppercase tracking-[0.25em] text-primary">Instagram</span>
+          </div>
+        </button>
+      )}
+
+      {/* Expanded: Instagram iframe embed */}
+      {open && (
+        <iframe
+          src={`https://www.instagram.com/reel/${file.id}/embed/`}
+          className="absolute inset-0 w-full h-full border-0"
+          allowFullScreen
+          loading="lazy"
+          title={file.label}
+        />
+      )}
+    </div>
+  );
+}
+
+// ─── Placeholder (no media yet) ───────────────────────────────────────────────
+function EmptyGallery() {
+  return (
+    <div className="flex flex-col items-center justify-center py-16 gap-4 border border-dashed border-surface-border rounded-sm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-10 h-10 text-primary/20">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <polyline points="21 15 16 10 5 21" />
+      </svg>
+      <p className="text-[9px] uppercase tracking-[0.35em] text-text-faint/40 text-center">
+        Fotoğraf & Videolar<br />Yakında Eklenecek
+      </p>
+    </div>
+  );
+}
+
+// ─── Media gallery ────────────────────────────────────────────────────────────
+function MediaGallery({ media }: { media: MediaFile[] }) {
+  if (media.length === 0) return <EmptyGallery />;
+
+  const photos = media.filter((m) => m.type === "photo").length;
+  const videos = media.filter((m) => m.type === "video").length;
+  const reels  = media.filter((m) => m.type === "instagram").length;
+
+  return (
+    <div className="flex flex-col gap-4">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-5">
+      <div className="flex items-center gap-4">
         <p className="text-[9px] uppercase tracking-[0.4em] text-primary">Fotoğraf & Video</p>
         <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.2em] text-text-faint/50">
-          <span>{photoCount} Foto</span>
-          <span className="w-px h-3 bg-surface-border" />
-          <span>{videoCount} Video</span>
+          {photos > 0 && <span>{photos} Foto</span>}
+          {photos > 0 && (videos + reels) > 0 && <span className="w-px h-3 bg-surface-border" />}
+          {videos > 0 && <span>{videos} Video</span>}
+          {videos > 0 && reels > 0 && <span className="w-px h-3 bg-surface-border" />}
+          {reels > 0 && <span>{reels} Reel</span>}
         </div>
       </div>
 
-      {/* Scrollable gallery */}
-      <div className="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4">
-        {items.map((item, i) =>
-          item.type === "video" ? (
-            <VideoCard key={i} label={item.label} />
+      {/* Responsive grid */}
+      <div className={`grid ${gridColsClass(media.length)} gap-3`}>
+        {media.map((file, i) =>
+          file.type === "photo" ? (
+            <PhotoCard key={i} file={file} />
+          ) : file.type === "instagram" ? (
+            <InstagramCard key={i} file={file} />
           ) : (
-            <PhotoCard key={i} label={item.label} />
+            <VideoCard key={i} file={file} />
           )
         )}
-        {/* Add more card */}
-        <div className="snap-start flex-shrink-0 w-52 aspect-[9/16] border border-dashed border-surface-border flex flex-col items-center justify-center gap-4 hover:border-primary/30 transition-colors duration-300 cursor-pointer group">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-8 h-8 text-text-faint/30 group-hover:text-primary/40 transition-colors">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-          <p className="text-[8px] uppercase tracking-[0.2em] text-text-faint/40 group-hover:text-primary/50 transition-colors text-center leading-relaxed">
-            İçerik<br />Yakında
-          </p>
-        </div>
-      </div>
-
-      {/* Scroll hint */}
-      <div className="flex items-center gap-2 mt-2">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3 h-3 text-text-faint/30">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
-        <p className="text-[8px] uppercase tracking-[0.25em] text-text-faint/30">Kaydırarak görün</p>
       </div>
     </div>
   );
 }
 
+// ─── Main section ─────────────────────────────────────────────────────────────
 export function AllServices() {
   return (
     <section id="all-services" className="relative bg-background">
 
-      {/* ── Section Header ── */}
+      {/* Section Header */}
       <div className="relative py-24 lg:py-32 px-6 lg:px-12 border-b border-surface-border">
         <div className="mx-auto max-w-[1600px]">
           <div className="reveal-on-scroll max-w-4xl">
@@ -300,7 +377,7 @@ export function AllServices() {
         </div>
       </div>
 
-      {/* ── Service Sections ── */}
+      {/* Service Sections */}
       {services.map((service, idx) => {
         const isEven = idx % 2 === 0;
         return (
@@ -315,7 +392,9 @@ export function AllServices() {
                 {/* Service info */}
                 <div className={`flex flex-col gap-6 ${!isEven ? "lg:order-2" : ""}`}>
                   <div className="flex items-center gap-6">
-                    <span className="text-6xl lg:text-8xl font-display text-primary/15 leading-none select-none">{service.number}</span>
+                    <span className="text-6xl lg:text-8xl font-display text-primary/15 leading-none select-none">
+                      {service.number}
+                    </span>
                     <div className="h-px flex-1 bg-gradient-to-r from-primary/30 to-transparent" />
                   </div>
                   <p className="text-[9px] uppercase tracking-[0.4em] text-primary">{service.tag}</p>
@@ -325,16 +404,14 @@ export function AllServices() {
                   <p className="text-sm md:text-base text-text-muted leading-relaxed tracking-wide">
                     {service.description}
                   </p>
-
                   <ul className="flex flex-col gap-3">
                     {service.highlights.map((h) => (
                       <li key={h} className="flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] text-text-faint">
-                        <span className="w-4 h-px bg-primary/50 flex-shrink-0" />
+                        <span className="w-4 h-px bg-primary/50 shrink-0" />
                         {h}
                       </li>
                     ))}
                   </ul>
-
                   <a
                     href="tel:+902422371015"
                     className="mt-2 inline-flex items-center gap-3 self-start px-8 py-4 border border-primary/30 bg-primary/5 text-[10px] uppercase tracking-[0.35em] text-primary hover:bg-primary/15 hover:border-primary/60 transition-all duration-300 group"
@@ -346,13 +423,9 @@ export function AllServices() {
                   </a>
                 </div>
 
-                {/* Scrollable media gallery */}
-                <div className={`flex items-center ${!isEven ? "lg:order-1" : ""}`}>
-                  <MediaGallery
-                    title={service.title}
-                    photoCount={service.mediaCount.photo}
-                    videoCount={service.mediaCount.video}
-                  />
+                {/* Media gallery */}
+                <div className={`${!isEven ? "lg:order-1" : ""}`}>
+                  <MediaGallery media={service.media} />
                 </div>
 
               </div>
