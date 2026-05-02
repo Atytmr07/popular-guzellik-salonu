@@ -140,7 +140,9 @@ const services = [
     description:
       "Kalıcı dalga ve kıvırma uygulamalarında saçın dokusunu koruyarak uzun süre dayanıklı kıvrımlar elde edilir. İnce, düz ve hacim kazanmak isteyen saçlar için ideal seçenek. Saç tipine özel perma protokolü ile sağlıklı ve canlı sonuçlar.",
     highlights: ["Kalıcı dalga & kıvırma", "Hacim kazandırıcı perma", "Saç tipine özel protokol"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "instagram", id: "DW4Ara1jQmX", label: "Perma Saç — Reel" },
+    ] as MediaFile[],
   },
   {
     id: "sac-kaynak",
