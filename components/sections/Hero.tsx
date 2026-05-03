@@ -110,7 +110,7 @@ export function Hero() {
                         <div className="absolute inset-0 w-[40%] right-[5%] bottom-[5%] h-[60%] border border-primary/20 z-10" />
 
                         {/* Floating Stats */}
-                        <div className="absolute bottom-12 -left-4 lg:-left-10 z-30 flex flex-col gap-3">
+                        <div className="absolute bottom-12 left-2 lg:-left-10 z-30 flex flex-col gap-3">
                             {salonConfig.hero.stats.map((stat, i) => (
                                 <div
                                     key={stat.label}

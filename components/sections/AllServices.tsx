@@ -354,7 +354,7 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
   return (
     <div
       ref={containerRef}
-      className="relative flex-none w-[52vw] sm:w-[38vw] md:w-[28vw] lg:w-[200px] xl:w-[220px] aspect-[9/16] rounded-xl overflow-hidden snap-center snap-always cursor-pointer group border border-white/5"
+      className="relative flex-none w-[44vw] sm:w-[34vw] md:w-[26vw] lg:w-[190px] xl:w-[210px] aspect-[9/16] rounded-xl overflow-hidden snap-center snap-always cursor-pointer group border border-white/5"
       onClick={toggle}
     >
       {/* Video — lazy loaded, first frame via metadata seek */}
@@ -408,7 +408,7 @@ function VideoCarousel({ files }: { files: VideoFile[] }) {
           <span>Kaydırın →</span>
         </div>
       </div>
-      <div className="flex gap-3 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 -mx-1 px-1">
+      <div className="flex gap-3 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2">
         {files.map((file, i) => (
           <CarouselVideoCard key={file.src} file={file} index={i} />
         ))}
@@ -553,7 +553,7 @@ export function AllServices() {
           <div
             key={service.id}
             id={service.id}
-            className={`relative px-6 lg:px-12 py-20 lg:py-28 border-b border-surface-border reveal-on-scroll ${isEven ? "bg-background" : "bg-surface"}`}
+            className={`relative px-6 lg:px-12 py-20 lg:py-28 border-b border-surface-border reveal-on-scroll overflow-hidden ${isEven ? "bg-background" : "bg-surface"}`}
           >
             <div className="mx-auto max-w-[1600px]">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
