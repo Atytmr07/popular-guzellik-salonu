@@ -39,7 +39,7 @@ const services = [
     tag: "Yüz Estetiği",
     description:
       "Yüz oranlarınıza ve kemik yapınıza göre kişiye özel kaş formu tasarlanır. Doğal kaş hatlarınız korunarak bakışlarınıza derinlik ve güç katılır. Her kaş seansı; ölçüm, form onayı ve hassas uygulama adımlarından oluşur.",
-    highlights: ["Kişiye özel form analizi", "Mikroblading & ipek kaş", "Kaş lifting & laminasyon"],
+    highlights: ["Kişiye özel form analizi", "Mikroblading & ipek kaş"],
     media: [] as MediaFile[],
   },
   {
@@ -48,8 +48,8 @@ const services = [
     title: "Manikür",
     tag: "El Bakımı",
     description:
-      "Eller güzelliğin sessiz taçlarıdır. Profesyonel manikür seanslarımızda tırnak şekillendirme, kütikül bakımı ve kalıcı oje uygulaması bir arada sunulur. Haftalarca süren pürüzsüz, canlı ve bakımlı eller için.",
-    highlights: ["Klasik & kalıcı manikür", "Fransız manikür", "Protez tırnak"],
+      "Eller güzelliğin sessiz taçlarıdır. Profesyonel manikür seanslarımızda kütikül bakımı ve el bakımı uygulamaları bir arada sunulur. Haftalarca süren pürüzsüz, canlı ve bakımlı eller için.",
+    highlights: ["Klasik & kalıcı manikür", "Fransız manikür"],
     media: [] as MediaFile[],
   },
   {
@@ -58,8 +58,8 @@ const services = [
     title: "Pedikür",
     tag: "Ayak Bakımı",
     description:
-      "Ayak sağlığı ve estetiğini bir arada sunan profesyonel pedikür hizmetimizle ayak tabanı bakımı, tırnak şekillendirmesi ve kalıcı oje uygulaması eksiksiz yapılır. Sezon fark etmeksizin bakımlı ve sağlıklı ayaklar için.",
-    highlights: ["Tıbbi pedikür", "Kalıcı oje & süsleme", "Ayak peeling bakımı"],
+      "Ayak sağlığı ve estetiğini bir arada sunan profesyonel pedikür hizmetimizle ayak tabanı ve kütikül bakımı eksiksiz yapılır. Sezon fark etmeksizin bakımlı ve sağlıklı ayaklar için.",
+    highlights: ["Tıbbi pedikür", "Ayak peeling bakımı"],
     media: [] as MediaFile[],
   },
   {
