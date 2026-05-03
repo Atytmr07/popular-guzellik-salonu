@@ -176,24 +176,24 @@ export const salonConfig = {
       "Her uygulama; görünümü yenilemek, yüz ifadesini netleştirmek ve daha güçlü bir duruş yaratmak için planlanır.",
     items: [
       {
-        title: "Mikro Kaynak Yenileme",
-        treatment: "Saç Kaynak Merkezi",
+        title: "Röfle & Fön Şekillendirme",
+        treatment: "Profesyonel Kuaför",
         result:
-          "Uzunluk eklendi, uçlar yoğunlaştırıldı ve geçiş çizgisi görünmez hale getirildi.",
+          "Yüz çevresine ışık veren röfleler ve hacimli fön şekillendirmesiyle canlı, bakımlı bir görünüm elde edildi.",
         image: {
-          src: "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1400&q=80",
-          alt: "Uzun ve parlak saçlara sahip bir kadın portresi",
+          src: "/sac-kesim.jpg",
+          alt: "Röfle uygulaması sonrası fönlü ve hacimli saç",
         },
         layout: "feature",
       },
       {
-        title: "Işıltılı Renk Geçişi",
+        title: "Balyaj & Ombre Renk Geçişi",
         treatment: "Profesyonel Kuaför",
         result:
-          "Sıcak ten alt tonuna uygun parlak röfleler ile daha canlı ve sofistike bir bitiş sağlandı.",
+          "Kökten uca doğal renk geçişi sağlayan balyaj uygulamasıyla sıcak kahveden altın sarısına kusursuz ombre elde edildi.",
         image: {
-          src: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1000&q=80",
-          alt: "Bakımlı saçları ve profesyonel makyajı ile kadın portresi",
+          src: "/isilti.jpg",
+          alt: "Balyaj ombre uygulaması sonrası arkadan saç görünümü",
         },
         layout: "portrait",
       },
@@ -203,19 +203,19 @@ export const salonConfig = {
         result:
           "Bakış daha kalkık, yüz hattı daha net ve ifade daha dengeli hale getirildi.",
         image: {
-          src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80",
+          src: "/kas-form.jpg",
           alt: "Net kaş formuna ve pürüzsüz cilde sahip kadın yakın planı",
         },
         layout: "detail",
       },
       {
-        title: "Lazer Takip Serisi",
-        treatment: "Lazer Epilasyon",
+        title: "Kalıcı Manikür",
+        treatment: "El Bakımı",
         result:
-          "Düzenli seans planı ile kısa sürede daha pürüzsüz ve bakımlı bir görünüm hedeflendi.",
+          "Derin bordo tonda kalıcı oje uygulamasıyla pürüzsüz, uzun ömürlü ve bakımlı eller elde edildi.",
         image: {
-          src: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=1400&q=80",
-          alt: "Güzellik seansı sonrası bakımlı görünüm sunan salon atmosferi",
+          src: "/tirnak.jpg",
+          alt: "Koyu bordo kalıcı manikür uygulaması yakın plan",
         },
         layout: "wide",
       },

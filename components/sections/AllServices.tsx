@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 // ─── Media types ────────────────────────────────────────────────────────────
 type PhotoFile = {
@@ -40,7 +40,17 @@ const services = [
     description:
       "Yüz oranlarınıza ve kemik yapınıza göre kişiye özel kaş formu tasarlanır. Doğal kaş hatlarınız korunarak bakışlarınıza derinlik ve güç katılır. Her kaş seansı; ölçüm, form onayı ve hassas uygulama adımlarından oluşur.",
     highlights: ["Kişiye özel form analizi", "Mikroblading & ipek kaş"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/kas-dizayn/kas1.mp4", label: "Kaş Dizayn 01" },
+      { type: "video", src: "/kas-dizayn/kas2.mp4", label: "Kaş Dizayn 02" },
+      { type: "video", src: "/kas-dizayn/kas3.mp4", label: "Kaş Dizayn 03" },
+      { type: "video", src: "/kas-dizayn/kas4.mp4", label: "Kaş Dizayn 04" },
+      { type: "video", src: "/kas-dizayn/kas5.mp4", label: "Kaş Dizayn 05" },
+      { type: "video", src: "/kas-dizayn/kas6.mp4", label: "Kaş Dizayn 06" },
+      { type: "video", src: "/kas-dizayn/kas7.mp4", label: "Kaş Dizayn 07" },
+      { type: "video", src: "/kas-dizayn/kas8.mp4", label: "Kaş Dizayn 08" },
+      { type: "video", src: "/kas-dizayn/kas9.mp4", label: "Kaş Dizayn 09" },
+    ] as MediaFile[],
   },
   {
     id: "manikur",
@@ -50,7 +60,11 @@ const services = [
     description:
       "Eller güzelliğin sessiz taçlarıdır. Profesyonel manikür seanslarımızda kütikül bakımı ve el bakımı uygulamaları bir arada sunulur. Haftalarca süren pürüzsüz, canlı ve bakımlı eller için.",
     highlights: ["Klasik & kalıcı manikür", "Fransız manikür"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/manikur/manikur1.mp4", label: "Manikür 01" },
+      { type: "video", src: "/manikur/manikur2.mp4", label: "Manikür 02" },
+      { type: "video", src: "/manikur/manikur3.mp4", label: "Manikür 03" },
+    ] as MediaFile[],
   },
   {
     id: "pedikur",
@@ -60,17 +74,13 @@ const services = [
     description:
       "Ayak sağlığı ve estetiğini bir arada sunan profesyonel pedikür hizmetimizle ayak tabanı ve kütikül bakımı eksiksiz yapılır. Sezon fark etmeksizin bakımlı ve sağlıklı ayaklar için.",
     highlights: ["Tıbbi pedikür", "Ayak peeling bakımı"],
-    media: [] as MediaFile[],
-  },
-  {
-    id: "makyaj",
-    number: "04",
-    title: "Makyaj",
-    tag: "Nişan · Günlük · Özel Gün",
-    description:
-      "Günlük makyajdan nişan ve düğün gibi özel gün hazırlıklarına kadar her anınız için profesyonel makyaj hizmetimiz sunulmaktadır. Ten tonunuza, yüz şeklinize ve etkinliğin ruhuna uygun, uzun süre kalıcı sonuçlar elde edilir.",
-    highlights: ["Nişan & gelin makyajı", "Smoky & editorial look", "Airbrush makyaj"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/pedikur/pedikur1.mp4", label: "Pedikür 01" },
+      { type: "video", src: "/pedikur/pedikur2.mp4", label: "Pedikür 02" },
+      { type: "video", src: "/pedikur/pedikur3.mp4", label: "Pedikür 03" },
+      { type: "video", src: "/pedikur/pedikur4.mp4", label: "Pedikür 04" },
+      { type: "video", src: "/pedikur/pedikur5.mp4", label: "Pedikür 05" },
+    ] as MediaFile[],
   },
   {
     id: "lazer-epilasyon",
@@ -80,7 +90,12 @@ const services = [
     description:
       "Ten tonuna ve kıl yapısına özel ayarlanan lazer parametreleriyle düzenli seans takibi yapılır. Konfor odaklı protokolümüzle istenmeyen tüylerden kalıcı olarak kurtulun. Her seans öncesi cilt analizi, uygulama sonrası bakım önerileri sunulur.",
     highlights: ["Tüm bölge uygulaması", "Seans takip planı", "Konfor odaklı protokol"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/lazer-epilasyon/lazer1.mp4", label: "Lazer Epilasyon 01" },
+      { type: "video", src: "/lazer-epilasyon/lazer2.mp4", label: "Lazer Epilasyon 02" },
+      { type: "video", src: "/lazer-epilasyon/lazer3.mp4", label: "Lazer Epilasyon 03" },
+      { type: "video", src: "/lazer-epilasyon/lazer4.mp4", label: "Lazer Epilasyon 04" },
+    ] as MediaFile[],
   },
   {
     id: "igneli-epilasyon",
@@ -90,7 +105,12 @@ const services = [
     description:
       "Lazer epilasyona yanıt vermeyen açık renkli veya ince tüyler için en etkili yöntem olan iğneli epilasyon, her kıl folükülünü tek tek hedef alarak kalıcı sonuç sunar. Hassas bölgeler için özellikle tercih edilen güvenilir bir yöntemdir.",
     highlights: ["Açık tüylerde kalıcı sonuç", "Folükül bazlı uygulama", "Kaş & yüz bölgesi uzmanı"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/igneli-epilasyon/igneli1.mp4", label: "İğneli Epilasyon 01" },
+      { type: "video", src: "/igneli-epilasyon/igneli2.mp4", label: "İğneli Epilasyon 02" },
+      { type: "video", src: "/igneli-epilasyon/igneli3.mp4", label: "İğneli Epilasyon 03" },
+      { type: "video", src: "/igneli-epilasyon/igneli4.mp4", label: "İğneli Epilasyon 04" },
+    ] as MediaFile[],
   },
   {
     id: "kalici-makyaj",
@@ -100,7 +120,14 @@ const services = [
     description:
       "Uyandığınız andan itibaren makyajlı görünmek artık mümkün. Dudak, kaş ve eyeliner bölgelerinde uygulanan kalıcı makyaj pigmentasyonu doğal ve şık bir görünüm sağlar. Uzun ömürlü, su geçirmez ve kişiye özel ton uyumu.",
     highlights: ["Kalıcı kaş & eyeliner", "Dudak pigmentasyonu", "Doğal ton uyumu"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/kalici-makyaj/kalici-makyaj1.mp4", label: "Kalıcı Makyaj 01" },
+      { type: "video", src: "/kalici-makyaj/kalici-makyaj2.mp4", label: "Kalıcı Makyaj 02" },
+      { type: "video", src: "/kalici-makyaj/kalici-makyaj3.mp4", label: "Kalıcı Makyaj 03" },
+      { type: "video", src: "/kalici-makyaj/kalici-makyaj4.mp4", label: "Kalıcı Makyaj 04" },
+      { type: "video", src: "/kalici-makyaj/kalici-makyaj5.mp4", label: "Kalıcı Makyaj 05" },
+      { type: "video", src: "/kalici-makyaj/kalici-makyaj6.mp4", label: "Kalıcı Makyaj 06" },
+    ] as MediaFile[],
   },
   {
     id: "cilt-bakimi",
@@ -110,7 +137,13 @@ const services = [
     description:
       "Cilt tipiniz analiz edilerek ihtiyacınıza özel protokol oluşturulur. Derinlemesine temizleme, nemlendirme, antiaging ve leke bakımı seçenekleriyle cildiniz her seferinde yenilenir. Profesyonel ürünler ve uzman ellerle parlak, sağlıklı cilt.",
     highlights: ["Cilt analizi & protokol", "Antiaging & leke bakımı", "Derin temizleme seansı"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/cilt-bakimi/cilt1.mp4", label: "Cilt Bakımı 01" },
+      { type: "video", src: "/cilt-bakimi/cilt2.mp4", label: "Cilt Bakımı 02" },
+      { type: "video", src: "/cilt-bakimi/cilt3.mp4", label: "Cilt Bakımı 03" },
+      { type: "video", src: "/cilt-bakimi/cilt4.mp4", label: "Cilt Bakımı 04" },
+      { type: "video", src: "/cilt-bakimi/cilt5.mp4", label: "Cilt Bakımı 05" },
+    ] as MediaFile[],
   },
   {
     id: "sac-renklendirme",
@@ -120,7 +153,11 @@ const services = [
     description:
       "Tek ton renklendirmeden balyaj, ombre ve röfleye kadar geniş bir renk yelpazesi sunulmaktadır. Ten tonunuza ve saç yapınıza göre en uygun renk paleti uzman kuaförlerimiz tarafından tasarlanır. Profesyonel ürünlerle canlı ve kalıcı sonuçlar.",
     highlights: ["Balyaj & ombre", "Tek ton & röfle", "Ten tonuna özel renk danışmanlığı"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/sac-renklendirme/sac-renk1.mp4", label: "Saç Renklendirme 01" },
+      { type: "video", src: "/sac-renklendirme/sac-renk2.mp4", label: "Saç Renklendirme 02" },
+      { type: "video", src: "/sac-renklendirme/sac-renk3.mp4", label: "Saç Renklendirme 03" },
+    ] as MediaFile[],
   },
   {
     id: "sac-kesim",
@@ -130,7 +167,15 @@ const services = [
     description:
       "Yüz şeklinize, yaşam stilinize ve saç yapınıza göre kişiye özel saç kesimi yapılır. Klasik kesimden editoryal stillere kadar geniş bir repertuarla her tercih karşılanır. Kesim sonrası fön ve şekillendirme dahildir.",
     highlights: ["Yüz şekline özel kesim", "Editoryal & trend stiller", "Fön & şekillendirme dahil"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/sac-kesim/sac-kesim1.mp4", label: "Saç Kesim 01" },
+      { type: "video", src: "/sac-kesim/sac-kesim2.mp4", label: "Saç Kesim 02" },
+      { type: "video", src: "/sac-kesim/sac-kesim3.mp4", label: "Saç Kesim 03" },
+      { type: "video", src: "/sac-kesim/sac-kesim4.mp4", label: "Saç Kesim 04" },
+      { type: "video", src: "/sac-kesim/sac-kesim5.mp4", label: "Saç Kesim 05" },
+      { type: "video", src: "/sac-kesim/sac-kesim6.mp4", label: "Saç Kesim 06" },
+      { type: "video", src: "/sac-kesim/sac-kesim7.mp4", label: "Saç Kesim 07" },
+    ] as MediaFile[],
   },
   {
     id: "perma-sac",
@@ -141,7 +186,14 @@ const services = [
       "Kalıcı dalga ve kıvırma uygulamalarında saçın dokusunu koruyarak uzun süre dayanıklı kıvrımlar elde edilir. İnce, düz ve hacim kazanmak isteyen saçlar için ideal seçenek. Saç tipine özel perma protokolü ile sağlıklı ve canlı sonuçlar.",
     highlights: ["Kalıcı dalga & kıvırma", "Hacim kazandırıcı perma", "Saç tipine özel protokol"],
     media: [
-      { type: "instagram", id: "DW4Ara1jQmX", label: "Perma Saç — Reel" },
+      { type: "video", src: "/perma/perma1.mp4", label: "Perma 01" },
+      { type: "video", src: "/perma/perma2.mp4", label: "Perma 02" },
+      { type: "video", src: "/perma/perma3.mp4", label: "Perma 03" },
+      { type: "video", src: "/perma/perma4.mp4", label: "Perma 04" },
+      { type: "video", src: "/perma/perma5.mp4", label: "Perma 05" },
+      { type: "video", src: "/perma/perma6.mp4", label: "Perma 06" },
+      { type: "video", src: "/perma/perma7.mp4", label: "Perma 07" },
+      { type: "video", src: "/perma/perma8.mp4", label: "Perma 08" },
     ] as MediaFile[],
   },
   {
@@ -152,7 +204,11 @@ const services = [
     description:
       "Uzunluk, yoğunluk ve dolgunluk isteyen kadınlar için premium saç kaynak uygulamaları yapılmaktadır. Mikro kaynak, bant kaynak ve füzyon yöntemleriyle doğal geçiş sağlanır. Kaynak bakımı ve yenileme seans planı dahildir.",
     highlights: ["Mikro & bant kaynak", "Füzyon uygulaması", "Kaynak bakım & yenileme"],
-    media: [] as MediaFile[],
+    media: [
+      { type: "video", src: "/sac-kaynak/kaynak1.mp4", label: "Saç Kaynak 01" },
+      { type: "video", src: "/sac-kaynak/kaynak2.mp4", label: "Saç Kaynak 02" },
+      { type: "video", src: "/sac-kaynak/kaynak3.mp4", label: "Saç Kaynak 03" },
+    ] as MediaFile[],
   },
 ];
 
@@ -195,61 +251,169 @@ function PhotoCard({ file }: { file: PhotoFile }) {
   );
 }
 
-// ─── Video card ───────────────────────────────────────────────────────────────
-function VideoCard({ file }: { file: VideoFile }) {
+// ─── Video card (grid, single item) ──────────────────────────────────────────
+function VideoCard({ file, sizes }: { file: VideoFile; sizes?: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+
+  const toggle = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) { v.play(); setPlaying(true); }
+    else { v.pause(); setPlaying(false); }
+  }, []);
 
   return (
     <div
       className="relative aspect-[9/16] bg-surface overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform duration-500"
-      onClick={() => setPlaying(true)}
+      onClick={toggle}
     >
-      {/* Poster image or dark bg */}
-      {file.poster && !playing && (
+      {/* Poster via explicit img if provided */}
+      {file.poster && (
         <Image
           src={file.poster}
           alt={file.label}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+          sizes={sizes ?? "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"}
           className="object-cover object-center"
         />
       )}
 
-      {/* Video element — renders only after click */}
-      {playing && (
+      {/* Video — always mounted, preload=metadata renders first frame */}
+      <video
+        ref={videoRef}
+        src={file.src}
+        loop
+        playsInline
+        preload="metadata"
+        onLoadedMetadata={(e) => { e.currentTarget.currentTime = 0.001; }}
+        onEnded={() => setPlaying(false)}
+        className="absolute inset-0 w-full h-full object-cover z-10"
+      />
+
+      {/* Overlay — hidden when playing */}
+      <div className={`absolute inset-0 z-20 transition-opacity duration-300 ${playing ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-primary/5 to-black/20" />
+        <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 m-2" />
+        <div className="absolute top-2 left-2">
+          <span className="glass-panel px-2 py-1 text-[7px] uppercase tracking-[0.25em] text-primary">Video</span>
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full border border-primary/50 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-primary ml-1">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
+        <div className="absolute bottom-3 left-3 right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+          <div className="w-4 h-px bg-primary mb-1.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-75" />
+          <p className="text-[8px] uppercase tracking-[0.15em] text-white/70 leading-snug line-clamp-2">{file.label}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Carousel item ────────────────────────────────────────────────────────────
+function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { rootMargin: "300px", threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  // Pause when scrolled out of view
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || !playing) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (!e.isIntersecting) { videoRef.current?.pause(); setPlaying(false); } },
+      { threshold: 0.2 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [playing]);
+
+  const toggle = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) { v.play(); setPlaying(true); }
+    else { v.pause(); setPlaying(false); }
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative flex-none w-[52vw] sm:w-[38vw] md:w-[28vw] lg:w-[200px] xl:w-[220px] aspect-[9/16] rounded-xl overflow-hidden snap-center snap-always cursor-pointer group border border-white/5"
+      onClick={toggle}
+    >
+      {/* Video — lazy loaded, first frame via metadata seek */}
+      {visible && (
         <video
+          ref={videoRef}
           src={file.src}
-          autoPlay
-          controls
+          loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover z-20"
+          preload="metadata"
+          onLoadedMetadata={(e) => { e.currentTarget.currentTime = 0.001; }}
+          onEnded={() => setPlaying(false)}
+          className="absolute inset-0 w-full h-full object-cover z-0"
         />
       )}
 
-      {/* Overlay — hidden when playing */}
-      {!playing && (
-        <>
-          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-primary/5 to-black/20 z-10" />
-          <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/30 transition-colors duration-700 m-2 z-10" />
-          {/* Badge */}
-          <div className="absolute top-2 left-2 z-10">
-            <span className="glass-panel px-2 py-1 text-[7px] uppercase tracking-[0.25em] text-primary">Video</span>
-          </div>
-          {/* Play button */}
-          <div className="absolute inset-0 flex items-center justify-center z-10">
-            <div className="w-12 h-12 rounded-full border border-primary/50 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-primary ml-1">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
-          </div>
-          {/* Label */}
-          <div className="absolute bottom-3 left-3 right-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-10">
-            <div className="w-4 h-px bg-primary mb-1.5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-75" />
-            <p className="text-[8px] uppercase tracking-[0.15em] text-white/70 leading-snug line-clamp-2">{file.label}</p>
-          </div>
-        </>
-      )}
+      {/* Overlay */}
+      <div className={`absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-200 ${playing ? "opacity-0 group-hover:opacity-100" : "opacity-100"}`}>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="relative w-11 h-11 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:border-primary/60 group-hover:bg-primary/20 transition-all duration-300">
+          {playing ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <rect x="6" y="4" width="4" height="16" rx="1" />
+              <rect x="14" y="4" width="4" height="16" rx="1" />
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          )}
+        </div>
+      </div>
+
+      {/* Index badge */}
+      <div className="absolute bottom-2 right-2 z-10 text-[9px] text-white/40 font-mono">
+        {String(index + 1).padStart(2, "0")}
+      </div>
+    </div>
+  );
+}
+
+// ─── Video carousel (for services with multiple videos) ───────────────────────
+function VideoCarousel({ files }: { files: VideoFile[] }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-4">
+        <p className="text-[9px] uppercase tracking-[0.4em] text-primary">Video</p>
+        <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.2em] text-text-faint/50">
+          <span>{files.length} video</span>
+          <span className="w-px h-3 bg-surface-border" />
+          <span>Kaydırın →</span>
+        </div>
+      </div>
+      <div className="flex gap-3 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 -mx-1 px-1">
+        {files.map((file, i) => (
+          <CarouselVideoCard key={file.src} file={file} index={i} />
+        ))}
+        <div className="flex-none w-4" />
+      </div>
     </div>
   );
 }
@@ -322,13 +486,20 @@ function EmptyGallery() {
 function MediaGallery({ media }: { media: MediaFile[] }) {
   if (media.length === 0) return <EmptyGallery />;
 
+  const videoFiles = media.filter((m): m is VideoFile => m.type === "video");
+  const otherFiles = media.filter((m) => m.type !== "video");
+
+  // Multiple videos with no mixed content → carousel
+  if (videoFiles.length >= 2 && otherFiles.length === 0) {
+    return <VideoCarousel files={videoFiles} />;
+  }
+
   const photos = media.filter((m) => m.type === "photo").length;
-  const videos = media.filter((m) => m.type === "video").length;
+  const videos = videoFiles.length;
   const reels  = media.filter((m) => m.type === "instagram").length;
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Header */}
       <div className="flex items-center gap-4">
         <p className="text-[9px] uppercase tracking-[0.4em] text-primary">Fotoğraf & Video</p>
         <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.2em] text-text-faint/50">
@@ -339,8 +510,6 @@ function MediaGallery({ media }: { media: MediaFile[] }) {
           {reels > 0 && <span>{reels} Reel</span>}
         </div>
       </div>
-
-      {/* Responsive grid */}
       <div className={`grid ${gridColsClass(media.length)} gap-3`}>
         {media.map((file, i) =>
           file.type === "photo" ? (
