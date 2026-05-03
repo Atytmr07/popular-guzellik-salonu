@@ -157,9 +157,9 @@ export const salonConfig = {
       },
       {
         key: "extensions",
-        title: "Saç Kaynak Merkezi",
+        title: "Kaş Dizayn",
         description:
-          "Uzunluk, yoğunluk ve doğal geçişi tek kompozisyonda buluşturan premium kaynak uygulamaları.",
+          "Yüz oranlarınıza özel tasarlanan kaş formuyla bakışlarınıza derinlik ve güç katıyoruz.",
       },
       {
         key: "hair",
