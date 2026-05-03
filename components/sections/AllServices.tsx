@@ -43,8 +43,28 @@ const services = [
     media: [] as MediaFile[],
   },
   {
-    id: "makyaj",
+    id: "manikur",
     number: "02",
+    title: "Manikür",
+    tag: "El Bakımı",
+    description:
+      "Eller güzelliğin sessiz taçlarıdır. Profesyonel manikür seanslarımızda kütikül bakımı ve el bakımı uygulamaları bir arada sunulur. Haftalarca süren pürüzsüz, canlı ve bakımlı eller için.",
+    highlights: ["Klasik & kalıcı manikür", "Fransız manikür"],
+    media: [] as MediaFile[],
+  },
+  {
+    id: "pedikur",
+    number: "03",
+    title: "Pedikür",
+    tag: "Ayak Bakımı",
+    description:
+      "Ayak sağlığı ve estetiğini bir arada sunan profesyonel pedikür hizmetimizle ayak tabanı ve kütikül bakımı eksiksiz yapılır. Sezon fark etmeksizin bakımlı ve sağlıklı ayaklar için.",
+    highlights: ["Tıbbi pedikür", "Ayak peeling bakımı"],
+    media: [] as MediaFile[],
+  },
+  {
+    id: "makyaj",
+    number: "04",
     title: "Makyaj",
     tag: "Nişan · Günlük · Özel Gün",
     description:
@@ -54,7 +74,7 @@ const services = [
   },
   {
     id: "lazer-epilasyon",
-    number: "03",
+    number: "05",
     title: "Lazer Epilasyon",
     tag: "Epilasyon",
     description:
@@ -64,7 +84,7 @@ const services = [
   },
   {
     id: "igneli-epilasyon",
-    number: "04",
+    number: "06",
     title: "İğneli Epilasyon",
     tag: "Epilasyon",
     description:
@@ -74,7 +94,7 @@ const services = [
   },
   {
     id: "kalici-makyaj",
-    number: "05",
+    number: "07",
     title: "Kalıcı Makyaj",
     tag: "Pigmentasyon",
     description:
@@ -84,7 +104,7 @@ const services = [
   },
   {
     id: "cilt-bakimi",
-    number: "06",
+    number: "08",
     title: "Cilt Bakımı",
     tag: "Cilt Sağlığı",
     description:
@@ -94,7 +114,7 @@ const services = [
   },
   {
     id: "sac-renklendirme",
-    number: "07",
+    number: "09",
     title: "Saç Renklendirme",
     tag: "Kuaför",
     description:
@@ -104,7 +124,7 @@ const services = [
   },
   {
     id: "sac-kesim",
-    number: "08",
+    number: "10",
     title: "Saç Kesim",
     tag: "Kuaför",
     description:
@@ -114,7 +134,7 @@ const services = [
   },
   {
     id: "perma-sac",
-    number: "09",
+    number: "11",
     title: "Perma Saç",
     tag: "Saç Şekillendirme",
     description:
@@ -126,7 +146,7 @@ const services = [
   },
   {
     id: "sac-kaynak",
-    number: "10",
+    number: "12",
     title: "Saç Kaynak",
     tag: "Kaynak Merkezi",
     description:
