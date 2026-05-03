@@ -39,32 +39,12 @@ const services = [
     tag: "Yüz Estetiği",
     description:
       "Yüz oranlarınıza ve kemik yapınıza göre kişiye özel kaş formu tasarlanır. Doğal kaş hatlarınız korunarak bakışlarınıza derinlik ve güç katılır. Her kaş seansı; ölçüm, form onayı ve hassas uygulama adımlarından oluşur.",
-    highlights: ["Kişiye özel form analizi", "Mikroblading & ipek kaş", "Kaş lifting & laminasyon"],
-    media: [] as MediaFile[],
-  },
-  {
-    id: "manikur",
-    number: "02",
-    title: "Manikür",
-    tag: "El Bakımı",
-    description:
-      "Eller güzelliğin sessiz taçlarıdır. Profesyonel manikür seanslarımızda tırnak şekillendirme, kütikül bakımı ve kalıcı oje uygulaması bir arada sunulur. Haftalarca süren pürüzsüz, canlı ve bakımlı eller için.",
-    highlights: ["Klasik & kalıcı manikür", "Fransız manikür", "Protez tırnak"],
-    media: [] as MediaFile[],
-  },
-  {
-    id: "pedikur",
-    number: "03",
-    title: "Pedikür",
-    tag: "Ayak Bakımı",
-    description:
-      "Ayak sağlığı ve estetiğini bir arada sunan profesyonel pedikür hizmetimizle ayak tabanı bakımı, tırnak şekillendirmesi ve kalıcı oje uygulaması eksiksiz yapılır. Sezon fark etmeksizin bakımlı ve sağlıklı ayaklar için.",
-    highlights: ["Tıbbi pedikür", "Kalıcı oje & süsleme", "Ayak peeling bakımı"],
+    highlights: ["Kişiye özel form analizi", "Mikroblading & ipek kaş"],
     media: [] as MediaFile[],
   },
   {
     id: "makyaj",
-    number: "04",
+    number: "02",
     title: "Makyaj",
     tag: "Nişan · Günlük · Özel Gün",
     description:
@@ -74,7 +54,7 @@ const services = [
   },
   {
     id: "lazer-epilasyon",
-    number: "05",
+    number: "03",
     title: "Lazer Epilasyon",
     tag: "Epilasyon",
     description:
@@ -84,7 +64,7 @@ const services = [
   },
   {
     id: "igneli-epilasyon",
-    number: "06",
+    number: "04",
     title: "İğneli Epilasyon",
     tag: "Epilasyon",
     description:
@@ -94,7 +74,7 @@ const services = [
   },
   {
     id: "kalici-makyaj",
-    number: "07",
+    number: "05",
     title: "Kalıcı Makyaj",
     tag: "Pigmentasyon",
     description:
@@ -104,7 +84,7 @@ const services = [
   },
   {
     id: "cilt-bakimi",
-    number: "08",
+    number: "06",
     title: "Cilt Bakımı",
     tag: "Cilt Sağlığı",
     description:
@@ -114,7 +94,7 @@ const services = [
   },
   {
     id: "sac-renklendirme",
-    number: "09",
+    number: "07",
     title: "Saç Renklendirme",
     tag: "Kuaför",
     description:
@@ -124,7 +104,7 @@ const services = [
   },
   {
     id: "sac-kesim",
-    number: "10",
+    number: "08",
     title: "Saç Kesim",
     tag: "Kuaför",
     description:
@@ -134,7 +114,7 @@ const services = [
   },
   {
     id: "perma-sac",
-    number: "11",
+    number: "09",
     title: "Perma Saç",
     tag: "Saç Şekillendirme",
     description:
@@ -146,7 +126,7 @@ const services = [
   },
   {
     id: "sac-kaynak",
-    number: "12",
+    number: "10",
     title: "Saç Kaynak",
     tag: "Kaynak Merkezi",
     description:
