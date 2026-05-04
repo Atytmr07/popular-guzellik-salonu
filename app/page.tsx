@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className="min-h-screen selection:bg-primary/30 selection:text-white overflow-x-hidden w-full">
+    <div className="min-h-screen selection:bg-primary/30 selection:text-white w-full" style={{ overflowX: "clip" }}>
       <Header />
       <main>
         <Hero />

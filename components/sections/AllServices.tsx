@@ -399,7 +399,7 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
 // ─── Video carousel (for services with multiple videos) ───────────────────────
 function VideoCarousel({ files }: { files: VideoFile[] }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 w-full max-w-full">
       <div className="flex items-center gap-4">
         <p className="text-[9px] uppercase tracking-[0.4em] text-primary">Video</p>
         <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.2em] text-text-faint/50">
@@ -408,11 +408,15 @@ function VideoCarousel({ files }: { files: VideoFile[] }) {
           <span>Kaydırın →</span>
         </div>
       </div>
-      <div className="flex gap-3 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2">
+      {/* overflow-x-auto + -webkit-overflow-scrolling: touch için inline style */}
+      <div
+        className="flex gap-3 hide-scrollbar snap-x snap-mandatory pb-2 w-full"
+        style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}
+      >
         {files.map((file, i) => (
           <CarouselVideoCard key={file.src} file={file} index={i} />
         ))}
-        <div className="flex-none w-4" />
+        <div className="flex-none w-4 shrink-0" />
       </div>
     </div>
   );
@@ -553,7 +557,7 @@ export function AllServices() {
           <div
             key={service.id}
             id={service.id}
-            className={`relative px-6 lg:px-12 py-20 lg:py-28 border-b border-surface-border reveal-on-scroll overflow-hidden ${isEven ? "bg-background" : "bg-surface"}`}
+            className={`relative px-6 lg:px-12 py-20 lg:py-28 border-b border-surface-border reveal-on-scroll ${isEven ? "bg-background" : "bg-surface"}`}
           >
             <div className="mx-auto max-w-[1600px]">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
