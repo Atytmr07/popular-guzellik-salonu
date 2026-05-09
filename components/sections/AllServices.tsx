@@ -328,7 +328,6 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
-  const [playing, setPlaying] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -342,26 +341,25 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
     return () => obs.disconnect();
   }, []);
 
-  // Pause when scrolled out of view
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || !playing) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (!e.isIntersecting) { videoRef.current?.pause(); setPlaying(false); } },
-      { threshold: 0.2 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [playing]);
-
-  const toggle = useCallback(() => {
+  // Tap → tam ekran aç ve oynat
+  const openFullscreen = useCallback(async () => {
     const v = videoRef.current;
     if (!v) return;
-    if (v.paused) { v.play(); setPlaying(true); }
-    else { v.pause(); setPlaying(false); }
+    try {
+      // iOS Safari: webkitEnterFullscreen, diğerleri: requestFullscreen
+      if ((v as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen) {
+        (v as HTMLVideoElement & { webkitEnterFullscreen: () => void }).webkitEnterFullscreen();
+      } else if (v.requestFullscreen) {
+        await v.requestFullscreen();
+      }
+      await v.play();
+    } catch {
+      // Fullscreen reddedilirse inline oynat
+      await v.play();
+    }
   }, []);
 
-  // Swipe-aware tap handler — sadece kart hareketsiz tap'lendiyse oynat
+  // Swipe-aware tap
   const handlePointerDown = (e: React.PointerEvent) => {
     pointerStart.current = { x: e.clientX, y: e.clientY };
   };
@@ -370,7 +368,7 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
     const dx = Math.abs(e.clientX - pointerStart.current.x);
     const dy = Math.abs(e.clientY - pointerStart.current.y);
     pointerStart.current = null;
-    if (dx < 8 && dy < 8) toggle();
+    if (dx < 8 && dy < 8) openFullscreen();
   };
 
   return (
@@ -389,25 +387,17 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
           playsInline
           preload="metadata"
           onLoadedMetadata={(e) => { e.currentTarget.currentTime = 0.001; }}
-          onEnded={() => setPlaying(false)}
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
       )}
 
-      {/* Overlay */}
-      <div className={`absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-200 ${playing ? "opacity-0 group-hover:opacity-100" : "opacity-100"}`}>
+      {/* Play overlay — her zaman görünür */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="relative w-11 h-11 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:border-primary/60 group-hover:bg-primary/20 transition-all duration-300">
-          {playing ? (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-              <rect x="6" y="4" width="4" height="16" rx="1" />
-              <rect x="14" y="4" width="4" height="16" rx="1" />
-            </svg>
-          ) : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          )}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+            <path d="M8 5v14l11-7z" />
+          </svg>
         </div>
       </div>
 
