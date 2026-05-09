@@ -422,7 +422,7 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
 // ─── Video carousel (for services with multiple videos) ───────────────────────
 function VideoCarousel({ files }: { files: VideoFile[] }) {
   return (
-    <div className="flex flex-col gap-3 w-full max-w-full">
+    <div className="flex flex-col gap-3 w-full min-w-0">
       <div className="flex items-center gap-4">
         <p className="text-[9px] uppercase tracking-[0.4em] text-primary">Video</p>
         <div className="flex items-center gap-2 text-[8px] uppercase tracking-[0.2em] text-text-faint/50">
@@ -582,7 +582,7 @@ export function AllServices() {
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
                 {/* Service info */}
-                <div className={`flex flex-col gap-6 ${!isEven ? "lg:order-2" : ""}`}>
+                <div className={`flex flex-col gap-6 min-w-0 ${!isEven ? "lg:order-2" : ""}`}>
                   <div className="flex items-center gap-6">
                     <span className="text-6xl lg:text-8xl font-display text-primary/15 leading-none select-none">
                       {service.number}
@@ -616,7 +616,7 @@ export function AllServices() {
                 </div>
 
                 {/* Media gallery */}
-                <div className={`${!isEven ? "lg:order-1" : ""}`}>
+                <div className={`min-w-0 ${!isEven ? "lg:order-1" : ""}`}>
                   <MediaGallery media={service.media} />
                 </div>
 
