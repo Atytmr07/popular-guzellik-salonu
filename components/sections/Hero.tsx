@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { salonConfig } from "../../data/config";
 
 export function Hero() {
@@ -92,15 +91,15 @@ export function Hero() {
 
                     {/* Right: Editorial Image + Floating Stats */}
                     <div className="relative h-[60dvh] lg:h-[75dvh] w-full reveal-scale order-1 lg:order-2">
-                        {/* Framed Image */}
-                        <div className="absolute inset-0 w-[90%] left-[5%] top-[5%] h-[90%] z-20 overflow-hidden border border-white/5 group">
-                            <Image
-                                src={salonConfig.hero.image.src}
-                                alt={salonConfig.hero.image.alt}
-                                fill
-                                priority
-                                className="object-cover object-center transition-transform duration-[2s] group-hover:scale-105"
-                                sizes="(max-width: 1024px) 100vw, 55vw"
+                        {/* Framed Video */}
+                        <div className="absolute inset-0 w-[90%] left-[5%] top-[5%] h-[90%] z-20 overflow-hidden border border-white/5">
+                            <video
+                                src="/hero.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="absolute inset-0 w-full h-full object-cover object-center"
                             />
                             {/* Dark Gradient Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
