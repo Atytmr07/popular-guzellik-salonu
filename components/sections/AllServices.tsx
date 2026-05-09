@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 // ─── Media types ────────────────────────────────────────────────────────────
 type PhotoFile = {
@@ -323,9 +324,126 @@ function VideoCard({ file, sizes }: { file: VideoFile; sizes?: string }) {
   );
 }
 
-// ─── Carousel item ────────────────────────────────────────────────────────────
-function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) {
+// ─── Video modal (portal) ─────────────────────────────────────────────────────
+function VideoModal({ files, initialIndex, onClose }: {
+  files: VideoFile[];
+  initialIndex: number;
+  onClose: () => void;
+}) {
+  const [idx, setIdx] = useState(initialIndex);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const touchStartX = useRef<number | null>(null);
+
+  const prev = useCallback(() => setIdx((i) => Math.max(0, i - 1)), []);
+  const next = useCallback(() => setIdx((i) => Math.min(files.length - 1, i + 1)), [files.length]);
+
+  // Yeni videoya geçince baştan oynat
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.currentTime = 0;
+    v.play().catch(() => {});
+  }, [idx]);
+
+  // Escape ile kapat
+  useEffect(() => {
+    const fn = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", fn);
+    return () => window.removeEventListener("keydown", fn);
+  }, [onClose]);
+
+  // Body scroll kilitle
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (dx < -50) next();
+    else if (dx > 50) prev();
+  };
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Kapat */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+
+      {/* 9:16 video */}
+      <div className="relative h-[92dvh] aspect-[9/16] max-w-[calc(92dvh*9/16)]">
+        <video
+          ref={videoRef}
+          key={files[idx].src}
+          src={files[idx].src}
+          autoPlay
+          loop
+          playsInline
+          controls
+          className="w-full h-full object-cover rounded-2xl"
+        />
+      </div>
+
+      {/* Sol ok */}
+      {idx > 0 && (
+        <button
+          onClick={prev}
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+      )}
+
+      {/* Sağ ok */}
+      {idx < files.length - 1 && (
+        <button
+          onClick={next}
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      )}
+
+      {/* Nokta göstergesi */}
+      <div className="absolute bottom-4 flex gap-1.5 flex-wrap justify-center px-8">
+        {files.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${i === idx ? "bg-primary scale-125" : "bg-white/30"}`}
+          />
+        ))}
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+// ─── Carousel kart (küçük thumbnail) ─────────────────────────────────────────
+function CarouselVideoCard({ file, index, onTap }: {
+  file: VideoFile;
+  index: number;
+  onTap: (index: number) => void;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const [visible, setVisible] = useState(false);
@@ -341,25 +459,6 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
     return () => obs.disconnect();
   }, []);
 
-  // Tap → tam ekran aç ve oynat
-  const openFullscreen = useCallback(async () => {
-    const v = videoRef.current;
-    if (!v) return;
-    try {
-      // iOS Safari: webkitEnterFullscreen, diğerleri: requestFullscreen
-      if ((v as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen) {
-        (v as HTMLVideoElement & { webkitEnterFullscreen: () => void }).webkitEnterFullscreen();
-      } else if (v.requestFullscreen) {
-        await v.requestFullscreen();
-      }
-      await v.play();
-    } catch {
-      // Fullscreen reddedilirse inline oynat
-      await v.play();
-    }
-  }, []);
-
-  // Swipe-aware tap
   const handlePointerDown = (e: React.PointerEvent) => {
     pointerStart.current = { x: e.clientX, y: e.clientY };
   };
@@ -368,7 +467,7 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
     const dx = Math.abs(e.clientX - pointerStart.current.x);
     const dy = Math.abs(e.clientY - pointerStart.current.y);
     pointerStart.current = null;
-    if (dx < 8 && dy < 8) openFullscreen();
+    if (dx < 8 && dy < 8) onTap(index);
   };
 
   return (
@@ -378,20 +477,15 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
     >
-      {/* Video — lazy loaded, first frame via metadata seek */}
       {visible && (
         <video
-          ref={videoRef}
           src={file.src}
-          loop
           playsInline
           preload="metadata"
           onLoadedMetadata={(e) => { e.currentTarget.currentTime = 0.001; }}
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
       )}
-
-      {/* Play overlay — her zaman görünür */}
       <div className="absolute inset-0 z-10 flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="relative w-11 h-11 rounded-full bg-black/50 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:border-primary/60 group-hover:bg-primary/20 transition-all duration-300">
@@ -400,8 +494,6 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
           </svg>
         </div>
       </div>
-
-      {/* Index badge */}
       <div className="absolute bottom-2 right-2 z-10 text-[9px] text-white/40 font-mono">
         {String(index + 1).padStart(2, "0")}
       </div>
@@ -409,8 +501,10 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
   );
 }
 
-// ─── Video carousel (for services with multiple videos) ───────────────────────
+// ─── Video carousel ───────────────────────────────────────────────────────────
 function VideoCarousel({ files }: { files: VideoFile[] }) {
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
   return (
     <div className="flex flex-col gap-3 w-full min-w-0">
       <div className="flex items-center gap-4">
@@ -423,10 +517,18 @@ function VideoCarousel({ files }: { files: VideoFile[] }) {
       </div>
       <div className="flex gap-3 overflow-x-auto overflow-y-hidden hide-scrollbar snap-x snap-mandatory pb-2 w-full">
         {files.map((file, i) => (
-          <CarouselVideoCard key={file.src} file={file} index={i} />
+          <CarouselVideoCard key={file.src} file={file} index={i} onTap={setOpenIdx} />
         ))}
         <div className="flex-none w-4 shrink-0" />
       </div>
+
+      {openIdx !== null && (
+        <VideoModal
+          files={files}
+          initialIndex={openIdx}
+          onClose={() => setOpenIdx(null)}
+        />
+      )}
     </div>
   );
 }
