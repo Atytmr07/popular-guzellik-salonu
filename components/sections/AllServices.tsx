@@ -431,7 +431,7 @@ function VideoCarousel({ files }: { files: VideoFile[] }) {
           <span>Kaydırın →</span>
         </div>
       </div>
-      <div className="flex gap-3 overflow-x-auto overflow-y-hidden hide-scrollbar snap-x snap-mandatory pb-2 w-full touch-pan-x">
+      <div className="flex gap-3 overflow-x-auto overflow-y-hidden hide-scrollbar snap-x snap-mandatory pb-2 w-full">
         {files.map((file, i) => (
           <CarouselVideoCard key={file.src} file={file} index={i} />
         ))}
