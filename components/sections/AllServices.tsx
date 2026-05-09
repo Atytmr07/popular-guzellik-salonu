@@ -327,6 +327,7 @@ function VideoCard({ file, sizes }: { file: VideoFile; sizes?: string }) {
 function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const [playing, setPlaying] = useState(false);
   const [visible, setVisible] = useState(false);
 
@@ -360,11 +361,24 @@ function CarouselVideoCard({ file, index }: { file: VideoFile; index: number }) 
     else { v.pause(); setPlaying(false); }
   }, []);
 
+  // Swipe-aware tap handler — sadece kart hareketsiz tap'lendiyse oynat
+  const handlePointerDown = (e: React.PointerEvent) => {
+    pointerStart.current = { x: e.clientX, y: e.clientY };
+  };
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (!pointerStart.current) return;
+    const dx = Math.abs(e.clientX - pointerStart.current.x);
+    const dy = Math.abs(e.clientY - pointerStart.current.y);
+    pointerStart.current = null;
+    if (dx < 8 && dy < 8) toggle();
+  };
+
   return (
     <div
       ref={containerRef}
       className="relative flex-none w-[44vw] sm:w-[34vw] md:w-[26vw] lg:w-[190px] xl:w-[210px] aspect-[9/16] rounded-xl overflow-hidden snap-center snap-always cursor-pointer group border border-white/5"
-      onClick={toggle}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
     >
       {/* Video — lazy loaded, first frame via metadata seek */}
       {visible && (
@@ -417,11 +431,7 @@ function VideoCarousel({ files }: { files: VideoFile[] }) {
           <span>Kaydırın →</span>
         </div>
       </div>
-      {/* overflow-x-auto + -webkit-overflow-scrolling: touch için inline style */}
-      <div
-        className="flex gap-3 hide-scrollbar snap-x snap-mandatory pb-2 w-full"
-        style={{ overflowX: "auto", WebkitOverflowScrolling: "touch" }}
-      >
+      <div className="flex gap-3 overflow-x-auto overflow-y-hidden hide-scrollbar snap-x snap-mandatory pb-2 w-full touch-pan-x">
         {files.map((file, i) => (
           <CarouselVideoCard key={file.src} file={file} index={i} />
         ))}
